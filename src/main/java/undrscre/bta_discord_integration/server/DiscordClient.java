@@ -1,4 +1,4 @@
-package de.olivermakesco.bta_discord_integration.server;
+package undrscre.bta_discord_integration.server;
 
 import club.minnced.discord.webhook.external.JDAWebhookClient;
 import net.dv8tion.jda.api.JDA;
@@ -22,13 +22,9 @@ public class DiscordClient {
     public static StandardGuildMessageChannel channel;
 
     public static boolean init() {
-        if (!de.olivermakesco.bta_discord_integration.config.BTADiscordIntegrationConfig.discord_enable) {
-            return false;
-        }
-
         try {
             JDABuilder builder = JDABuilder.create(
-                    de.olivermakesco.bta_discord_integration.config.BTADiscordIntegrationConfig.discord_token,
+                    undrscre.bta_discord_integration.config.discord_token,
                     GatewayIntent.GUILD_MESSAGES,
                     GatewayIntent.MESSAGE_CONTENT,
                     GatewayIntent.GUILD_WEBHOOKS
@@ -39,7 +35,7 @@ public class DiscordClient {
 
             return true;
         } catch (Throwable t) {
-            de.olivermakesco.bta_discord_integration.BTADiscordIntegrationMod.LOGGER.debug("Unable to start discord bot.", t);
+            undrscre.bta_discord_integration.mod.LOGGER.info("unable to start discord bot.", t);
             return false;
         }
     }
@@ -50,7 +46,7 @@ public class DiscordClient {
         }
 
         if (channel == null) {
-            channel = jda.getChannelById(StandardGuildMessageChannel.class, de.olivermakesco.bta_discord_integration.config.BTADiscordIntegrationConfig.discord_channel);
+            channel = jda.getChannelById(StandardGuildMessageChannel.class, undrscre.bta_discord_integration.config.discord_channel);
         }
 
         return channel;
@@ -103,7 +99,7 @@ public class DiscordClient {
                     return;
                 }
 
-                if (!message.getMessage().getChannel().getId().equals(de.olivermakesco.bta_discord_integration.config.BTADiscordIntegrationConfig.discord_channel)) {
+                if (!message.getMessage().getChannel().getId().equals(undrscre.bta_discord_integration.config.discord_channel)) {
                     return;
                 }
 

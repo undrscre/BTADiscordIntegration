@@ -6,7 +6,7 @@
   "name": "BTA Discord Integration",
   "description": "Discord Integration for BTA Servers",
   "authors": [
-    "Octal"
+    "undrscre"
   ],
   "contact": {
     "sources": ""
@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "de.olivermakesco.bta_discord_integration.BTADiscordIntegrationMod"
+      "undrscre.bta_discord_integration.mod"
     ],
     "client": [
     ]

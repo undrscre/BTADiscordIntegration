@@ -6,3 +6,4 @@ run/
 run-server/
 bin
 build
+.vscode

@@ -1,12 +1,13 @@
-package de.olivermakesco.bta_discord_integration;
+package undrscre.bta_discord_integration;
 
-import de.olivermakesco.bta_discord_integration.server.DiscordChatRelay;
-import de.olivermakesco.bta_discord_integration.server.DiscordClient;
 import net.fabricmc.api.ModInitializer;
+import undrscre.bta_discord_integration.server.DiscordChatRelay;
+import undrscre.bta_discord_integration.server.DiscordClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BTADiscordIntegrationMod implements ModInitializer {
+public class mod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("BTA Discord Integration");
 
     @Override
@@ -14,6 +15,8 @@ public class BTADiscordIntegrationMod implements ModInitializer {
         new Thread(() -> {
             if (DiscordClient.init()) {
                 DiscordChatRelay.sendServerStartMessage();
+            } else {
+                LOGGER.error("FUCKK FUCKK FUCK FUCK FUCKKKKKK");
             }
         }).start();
     }

@@ -3,6 +3,10 @@ plugins {
 	id 'java'
 }
 
+configurations {
+	includeInJar
+}
+
 import org.gradle.internal.os.OperatingSystem
 
 project.ext.lwjglVersion = "3.3.3"
@@ -88,6 +92,11 @@ dependencies {
 	modRuntimeOnly "objects:client:43db9b498cb67058d2e12d394e6507722e71bb45" // https://piston-data.mojang.com/v1/objects/43db9b498cb67058d2e12d394e6507722e71bb45/client.jar
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+	implementation "net.dv8tion:JDA:5.2.2"
+	includeInJar "net.dv8tion:JDA:5.2.2"
+	implementation "club.minnced:discord-webhooks:0.8.4"
+	includeInJar "club.minnced:discord-webhooks:0.8.4"
+
 	// Helper library
 	// If you do not need Halplibe you can comment this line out or delete this line
 	modImplementation("turniplabs:halplibe:${project.halplibe_version}")
@@ -134,9 +143,14 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${archivesBaseName}" }
-	}
+    from("LICENSE") {
+        rename { "${it}_${archivesBaseName}" }
+    }
+    
+    from {
+        configurations.includeInJar.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 configurations.configureEach {
