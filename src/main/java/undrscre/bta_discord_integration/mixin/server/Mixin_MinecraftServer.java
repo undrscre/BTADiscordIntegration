@@ -16,7 +16,8 @@ public class Mixin_MinecraftServer {
             at = @At("HEAD")
     )
     public void sendStopMessage(CallbackInfo ci) {
+        DiscordChatRelay.updateMemberCount(false, 0);
         DiscordChatRelay.sendServerStoppedMessage();
+        undrscre.bta_discord_integration.mod.shutdownScheduler();
     }
-
 }

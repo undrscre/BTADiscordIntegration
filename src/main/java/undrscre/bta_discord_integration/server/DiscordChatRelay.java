@@ -7,6 +7,7 @@ import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import net.minecraft.server.MinecraftServer;
 import undrscre.bta_discord_integration.config;
 import net.minecraft.core.net.command.TextFormatting;
+import net.dv8tion.jda.api.managers.channel.middleman.StandardGuildMessageChannelManager;
 import java.time.Instant;
 
 public class DiscordChatRelay {
@@ -15,11 +16,41 @@ public class DiscordChatRelay {
 
     public static void sendToMinecraft(String author, String message) {
         MinecraftServer server = MinecraftServer.getInstance();
-        message = "[" + TextFormatting.PURPLE + "DISCORD" + TextFormatting.RESET + "] <" + author + "> " + message;
+        message = "[" + TextFormatting.PURPLE + "✦" + TextFormatting.RESET + "] <" + author + "> " + message;
         undrscre.bta_discord_integration.mod.info(message);
         String[] lines = message.split("\n");
         for (String chatMessage : lines) {
             server.playerList.sendEncryptedChatToAllPlayers(chatMessage);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static void updateMemberCount(Boolean status, long start_timestamp) {
+        MinecraftServer server = MinecraftServer.getInstance();
+        StandardGuildMessageChannelManager manager = DiscordClient.getChannel().getManager();
+        String playerCount = Integer.toString(server.playerList.playerEntities.size());
+        String maxPlayerCount = Integer.toString(server.maxPlayers);
+        try {
+            if (!status) {
+                manager.setTopic(config.discord_channelTopicMessage
+                    .replace("{serverStatus}", "❌")
+                    .replace("{playerCount}", playerCount)
+                    .replace("{maxPlayers}", maxPlayerCount)
+                    .replace("{startTimestamp}", "[CURRENTLY STOPPED]")
+                    .replace("{updateTimestamp}", String.format("<t:%s:R>", System.currentTimeMillis() / 1000L))
+                ).complete();
+            } else {
+                manager.setTopic(config.discord_channelTopicMessage
+                    .replace("{serverStatus}", "✅")
+                    .replace("{playerCount}", playerCount)
+                    .replace("{maxPlayers}", maxPlayerCount)
+                    .replace("{startTimestamp}", String.format("<t:%s:R>", start_timestamp))
+                    .replace("{updateTimestamp}", String.format("<t:%s:R>", System.currentTimeMillis() / 1000L))
+                ).queue();
+            }
+            undrscre.bta_discord_integration.mod.LOGGER.info("updated channel topic!");
+        } catch (Exception e) {
+            undrscre.bta_discord_integration.mod.LOGGER.warn("unable to change channel topic: ", e);
         }
     }
 

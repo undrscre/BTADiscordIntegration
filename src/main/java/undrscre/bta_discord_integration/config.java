@@ -22,7 +22,8 @@ public class config {
     public static String discord_channel = "CHANNEL ID";
     public static String discord_serverpfp_url = "https://i.imgur.com/dJUId0O.png";
     public static String discord_servername = "Server";
-
+    public static Boolean discord_changeChannelTopic = false;
+    public static String discord_channelTopicMessage = "{serverStatus} {playerCount}/{maxPlayers} player(s) online. | Server started {startTimestamp} | Last updated {updateTimestamp}";
     public static Map<String, Map<String, String>> discord_embeds = new HashMap<>();
     
     static {
@@ -115,6 +116,8 @@ public class config {
         discord_channel = get(object, "channel", discord_channel);
         discord_serverpfp_url = get(object, "serverpfp_url", discord_serverpfp_url);
         discord_servername = get(object, "servername", discord_servername);
+        discord_changeChannelTopic = get(object,"change_topic", discord_changeChannelTopic);
+        discord_channelTopicMessage = get(object,"topic_message", discord_channelTopicMessage);
         discord_embeds = get(object, "embeds", discord_embeds);
     }
 
